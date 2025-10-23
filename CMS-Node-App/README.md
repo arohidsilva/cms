@@ -11,6 +11,12 @@ GRANT ALL ON SCHEMA public TO cms_user;
 
 \dt --> view all tables
 
+## Install node packages 
+
+cd CMS-Node-App/cms && npm install 
+
+cd CMS-Node-App/node-app && npm install 
+
 
 ## Local execution of modules 
 
