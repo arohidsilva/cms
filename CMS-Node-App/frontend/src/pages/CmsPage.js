@@ -45,12 +45,22 @@ function CmsPage() {
     }
   };
 
-  const disconnectNode = async (nodeId) => {
+  const toggleNodeConnection = async (node) => {
     try {
-      await axios.post(`http://localhost:3000/api/nodes/disconnect/${nodeId}`);
+      if (node.connected) {
+        // Disconnect the node
+        await axios.post(`http://localhost:3000/api/nodes/disconnect/${node.nodeId}`);
+      } else {
+        // Register the node
+        await axios.post(`http://localhost:3000/api/nodes/register`, {
+          nodeId: node.nodeId,
+          ip: node.ip,
+          port: node.port
+        });
+      }
       fetchNodes();
     } catch (error) {
-      console.error('Error disconnecting node:', error);
+      console.error('Error toggling node connection:', error);
     }
   };
 
@@ -91,10 +101,10 @@ function CmsPage() {
                     <td>{node.connected ? 'Connected' : 'Disconnected'}</td>
                     <td>
                       <button 
-                        className="btn btn-danger btn-sm"
-                        onClick={() => disconnectNode(node.nodeId)}
+                        className={`btn btn-sm ${node.connected ? 'btn-danger' : 'btn-success'}`}
+                        onClick={() => toggleNodeConnection(node)}
                       >
-                        Disconnect
+                        {node.connected ? 'Disconnect' : 'Register'}
                       </button>
                     </td>
                   </tr>
